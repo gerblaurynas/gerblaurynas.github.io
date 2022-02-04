@@ -1,14 +1,16 @@
 function runGame() {
     let canvas = document.getElementById("game-canvas");
-    canvas.width = window.innerWidth
+    canvas.width = window.innerWidth - 100
     canvas.height = window.innerHeight - 350
     let game = canvas.getContext("2d");
     let lastTimestamp = 0;
     let score = document.getElementById("player-score");
     let health = document.getElementById("health");
     const maxHealthEl = document.getElementById('max-health')
+    const difficultyEl = document.getElementById('difficulty')
     let running = false;
     let maxHealth = parseInt(maxHealthEl.value)
+    let difficulty = parseInt(difficultyEl.value)
     health.innerText = maxHealth
 
     maxHealthEl.addEventListener("change", function () {
@@ -17,13 +19,18 @@ function runGame() {
             health.innerText = maxHealth
         }
     })
+    difficultyEl.addEventListener("change", function () {
+        if (!running) {
+            difficulty = parseInt(difficulty.value)
+        }
+    })
 
     const FRAME_RATE = 60;
     const FRAME_DURATION = 1000 / FRAME_RATE;
 
     let fallers = [];
 
-    let DEFAULT_DESCENT = 0.0001; // This is per millisecond.
+    let DEFAULT_DESCENT = 0.0001 * difficulty; // This is per millisecond.
     let Faller = function (x, y, width, height, dx = 0, dy = 0, ax = 0, ay = DEFAULT_DESCENT) {
         this.x = x;
         this.y = y;
@@ -52,7 +59,7 @@ function runGame() {
         this.dy += this.ay * millisecondsElapsed;
     };
 
-    const DEFAULT_PLAYER_WIDTH = 250;
+    const DEFAULT_PLAYER_WIDTH = 200;
     const DEFAULT_PLAYER_HEIGHT = 15;
     const DEFAULT_PLAYER_Y = canvas.height - DEFAULT_PLAYER_HEIGHT;
     let Player = function (x, y = DEFAULT_PLAYER_Y, width = DEFAULT_PLAYER_WIDTH, height = DEFAULT_PLAYER_HEIGHT) {
@@ -127,7 +134,7 @@ function runGame() {
     const WIDTH_RANGE = 20;
     const MIN_HEIGHT = 10;
     const HEIGHT_RANGE = 20;
-    const MILLISECONDS_BETWEEN_FALLERS = 2800;
+    const MILLISECONDS_BETWEEN_FALLERS = 2000;
 
     let fallerGenerator;
     let startFallerGenerator = () => {
@@ -157,16 +164,16 @@ function runGame() {
             playerXVelocity = playerXVelocity * 1.5
         } else {
             if (direction === "left") {
-                playerXVelocity = -15
+                playerXVelocity = -20
             } else if (direction === "right") {
-                playerXVelocity = +15
+                playerXVelocity = +20
             } else {
                 playerXVelocity = 0
             }
         }
 
         const newPlayerX = player.x + playerXVelocity
-        if (newPlayerX >= 0 && newPlayerX + player.width <= document.body.clientWidth) {
+        if (newPlayerX >= 0 && newPlayerX + player.width <= canvas.width) {
             player.x = newPlayerX
         }
 
@@ -205,6 +212,8 @@ function runGame() {
         health.innerText = "0"
         player.health = parseInt(maxHealthEl.value)
         player.score = 0
+        difficulty = parseInt(difficultyEl.value)
+        DEFAULT_DESCENT = 0.0001 * difficulty
     });
 
     document.getElementById("stop-button").addEventListener("click", () => {

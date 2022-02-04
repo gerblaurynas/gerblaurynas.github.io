@@ -1,4 +1,4 @@
-<div><canvas id="game-canvas"></canvas></div>
+<div style="margin: 30px;"><canvas id="game-canvas" style="border: 5px solid;"></canvas></div>
 <div style="display: flex; justify-content: space-around;">
     <div>
         <p>
@@ -7,8 +7,13 @@
         </p>
         <div>
             <input type="range" id="max-health" name="max-health"
-                   min="1" max="100" value="10">
+                   min="1" max="25" value="5">
             <label for="max-health">Health</label>
+        </div>
+        <div>
+            <input type="range" id="difficulty" name="difficulty"
+                   min="1" max="10" value="3">
+            <label for="max-health">Difficulty</label>
         </div>
         <p>
             <button id="start-button">Start</button>
@@ -37,7 +42,7 @@
     // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
 
     // the link to your model provided by Teachable Machine export panel
-    const URL = "https://teachablemachine.withgoogle.com/models/WNqobtsBa/";
+    const URL = "https://teachablemachine.withgoogle.com/models/e3Lk4_Mqz/";
     let model, webcam, ctx, labelContainer, maxPredictions, actionSpan;
 
     init();
