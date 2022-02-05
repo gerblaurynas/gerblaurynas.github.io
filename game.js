@@ -161,12 +161,12 @@ function runGame() {
         direction = actionSpan.innerText
 
         if (lastDirection === direction && playerXVelocity !== 0) {
-            playerXVelocity = playerXVelocity * 1.5
+            playerXVelocity = playerXVelocity * 1.002
         } else {
             if (direction === "left") {
-                playerXVelocity = -20
+                playerXVelocity = -4
             } else if (direction === "right") {
-                playerXVelocity = +20
+                playerXVelocity = +4
             } else {
                 playerXVelocity = 0
             }
@@ -180,7 +180,7 @@ function runGame() {
         lastDirection = direction
     };
 
-    actionSpan.addEventListener("DOMSubtreeModified", updatePlayerPosition)
+    setInterval(updatePlayerPosition, 2);
 
     let nextFrame = (timestamp) => {
         if (!lastTimestamp) {
